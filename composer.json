@@ -1,0 +1,15 @@
+{
+    "name": "klinson/aws-s3-minio",
+    "description": "Flexible and feature-complete minio client for PHP, depend on aws/aws-sdk-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "klinson",
+            "email": "klinson@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.7",
+        "aws/aws-sdk-php": "^3.0.0"
+    }
+}
