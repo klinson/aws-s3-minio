@@ -1,6 +1,7 @@
 {
     "name": "klinson/aws-s3-minio",
     "description": "Flexible and feature-complete minio client for PHP, depend on aws/aws-sdk-php",
+    "keywords": ["minio", "s3", "aws", "cloud", "klinson"],
     "license": "MIT",
     "authors": [
         {
@@ -11,5 +12,10 @@
     "require": {
         "php": ">=7.1.7",
         "aws/aws-sdk-php": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Minio\\": "src/"
+        }
     }
 }
