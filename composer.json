@@ -2,11 +2,13 @@
     "name": "klinson/aws-s3-minio",
     "description": "Flexible and feature-complete minio client for PHP, depend on aws/aws-sdk-php",
     "keywords": ["minio", "s3", "aws", "cloud", "klinson"],
+    "homepage": "https://github.com/klinson/aws-s3-minio",
     "license": "MIT",
     "authors": [
         {
             "name": "klinson",
-            "email": "klinson@163.com"
+            "email": "klinson@163.com",
+            "homepage": "http://www.klinson.com/"
         }
     ],
     "require": {
