@@ -26,3 +26,12 @@ function echo_error_info(\Minio\Object\ObjectClient $ObjectClient)
     echo 'error_code: '.$ObjectClient->getErrorCode() . PHP_EOL;
     echo 'error_message: '.$ObjectClient->getErrorMessage() . PHP_EOL;
 }
+
+// format object in function listObject()
+function format_object($object) {
+    return [
+        'key' => $object['Key'],
+        'size' => $object['Size'],
+        'last_modified' => $object['LastModified']->getTimestamp(),
+    ];
+}

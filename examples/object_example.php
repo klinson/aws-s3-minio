@@ -54,3 +54,51 @@ if ($url === false) {
 }
 echo 'download_url: ' . $url . PHP_EOL;
 
+// 复制单个对象
+$targetStorageSavePath = $ObjectClient->copyObject('111.jpg', '111_copy.jpg');
+if ($targetStorageSavePath === false) {
+    echo_error_info($ObjectClient);
+    return ;
+}
+echo 'copyObject save path: ' . $targetStorageSavePath .PHP_EOL;
+
+// 获取1000个对象
+$result = $ObjectClient->listObjects();
+if ($result === false) {
+    echo_error_info($ObjectClient);
+    return ;
+}
+print_r($result);
+echo PHP_EOL;
+
+// 获取所有
+$result = $ObjectClient->getAllObjects();
+if ($result === false) {
+    echo_error_info($ObjectClient);
+    return ;
+}
+print_r($result);
+echo PHP_EOL;
+
+//remove objects
+$remove_list = [
+    'testkey',
+    'test1/3.txt'
+];
+$ObjectClient->removeObject($remove_list);
+if ($result === false) {
+    echo_error_info($ObjectClient);
+    return ;
+}
+print_r($result);
+echo PHP_EOL;
+
+//remove a object
+$remove_list = 'test1/5.txt';
+$ObjectClient->removeObject($remove_list);
+if ($result === false) {
+    echo_error_info($ObjectClient);
+    return ;
+}
+print_r($result);
+echo PHP_EOL;
