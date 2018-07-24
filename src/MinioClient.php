@@ -45,11 +45,13 @@ class MinioClient
     public function setS3Client(S3Client $S3Client)
     {
         $this->S3Client = $S3Client;
+        return $this;
     }
 
     public function setBucket($bucket)
     {
         $this->bucket = $bucket;
+        return $this;
     }
 
     public function getBucket()

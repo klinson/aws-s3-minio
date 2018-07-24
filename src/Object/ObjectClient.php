@@ -316,7 +316,7 @@ aram string $bucket
      */
     public function getAllObjects($prefix = '')
     {
-        return $this->getAllObjectsInBucket($this->bucket, $prefix = '');
+        return $this->getAllObjectsInBucket($this->bucket, $prefix);
     }
 
     /**
@@ -334,7 +334,6 @@ aram string $bucket
             $result = $this->S3Client->getPaginator('ListObjects', [
                 'Bucket' => $bucket,
                 'Prefix' => $prefix
-
             ]);
 
             if (empty($result->current()['Contents'])) {
