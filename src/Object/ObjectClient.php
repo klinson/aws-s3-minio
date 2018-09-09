@@ -170,8 +170,8 @@ aram string $bucket
     }
 
     /**
-     * 获取对象（预览/下载）URL（指定bucket）
-     * @param $storageSavePath
+     * 获取url 自动判断
+     * @param string $storageSavePath
      * @param null $expiredAt
      * @author klinson <klinson@163.com>
      * @return string
@@ -179,6 +179,62 @@ aram string $bucket
     public function getObjectUrl(string $storageSavePath, $expiredAt = null)
     {
         return $this->getObjectUrlInBucket($this->bucket, $storageSavePath, $expiredAt);
+    }
+
+    public function getObjectUrlInBucket(string $bucket, string $storageSavePath, $expiredAt = null)
+    {
+
+        if ($this->isPublic($bucket, $storageSavePath)) {
+            return $this->getObjectPlainUrlInBucket($bucket, $storageSavePath);
+        } else {
+            return $this->getObjectPresignedUrlInBucket($bucket, $storageSavePath, $expiredAt);
+        }
+    }
+
+    /**
+     * 判断是否public
+     * @param string $bucket
+     * @param string $storageSavePath
+     * @author klinson <klinson@163.com>
+     * @return bool
+     */
+    public function isPublic(string $bucket, string $storageSavePath)
+    {
+        $policies = $this->getPolicies($bucket);
+        foreach ($policies as $policy) {
+            if (preg_str($policy, $storageSavePath)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取开放url
+     * @param string $storageSavePath
+     * @author klinson <klinson@163.com>
+     * @return string
+     */
+    public function getObjectPlainUrl(string $storageSavePath)
+    {
+        return $this->getObjectPlainUrlInBucket($this->bucket, $storageSavePath);
+    }
+
+    public function getObjectPlainUrlInBucket(string $bucket, string $storageSavePath)
+    {
+        return $this->S3Client->getObjectUrl($bucket, $storageSavePath);
+    }
+
+    /**
+     * 获取对象（预览/下载）URL（指定bucket）
+     * @param $storageSavePath
+     * @param null $expiredAt
+     * @author klinson <klinson@163.com>
+     * @return string
+     */
+    public function getObjectPresignedUrl(string $storageSavePath, $expiredAt = null)
+    {
+        return $this->getObjectPresignedUrlInBucket($this->bucket, $storageSavePath, $expiredAt);
     }
 
     /**
@@ -191,7 +247,7 @@ aram string $bucket
      * @author klinson <klinson@163.com>
      * @return string
      */
-    public function getObjectUrlInBucket(string $bucket, string $storageSavePath, $expiredAt = null)
+    public function getObjectPresignedUrlInBucket(string $bucket, string $storageSavePath, $expiredAt = null)
     {
         // Get a command object from the client
         $command = $this->S3Client->getCommand('GetObject', [

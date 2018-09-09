@@ -11,17 +11,24 @@ namespace Minio;
 use Aws\Exception\AwsException;
 use Aws\S3\S3Client;
 
+require_once __DIR__ . '/helpers.php';
+
 class MinioClient
 {
     protected $S3Client;
     protected $bucket;
     protected $urlExpireTime = 24 * 60 * 60; //url默认一天有限时间
 
+    // bucket_name => [public_path_regex]
+    protected $publicPolicies = [
+//        'test-bucket' => 'public/*'
+    ];
+
     protected $errorCode;
     protected $errorMessage;
     protected $errorInfo;
 
-    public function __construct($config = [])
+    public function __construct($config = [], array $publicPolicies = [])
     {
         $this->S3Client = new S3Client([
             'credentials' => [
@@ -35,6 +42,35 @@ class MinioClient
         ]);
 
         $this->bucket = $config['bucket'] ?? '';
+        $this->publicPolicies = $publicPolicies;
+    }
+
+    /**
+     * 设置公开路由
+     * @param array $policies
+     * @param string|null $bucket
+     * @author klinson <klinson@163.com>
+     */
+    public function setPolicies(array $policies, string $bucket = null)
+    {
+        if (is_null($bucket)) {
+            $bucket = $this->bucket;
+        }
+        $this->publicPolicies[$bucket] = $policies;
+    }
+
+    /**
+     * 获取公开路由
+     * @param string|null $bucket
+     * @author klinson <klinson@163.com>
+     * @return array|mixed
+     */
+    public function getPolicies(string $bucket = null)
+    {
+        if (is_null($bucket)) {
+            $bucket = $this->bucket;
+        }
+        return $this->publicPolicies[$bucket] ?? [];
     }
 
     public function getS3Client()
