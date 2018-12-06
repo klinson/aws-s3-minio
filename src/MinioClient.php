@@ -116,8 +116,13 @@ class MinioClient
      */
     protected function returnFalseWithSaveErrorInfo(AwsException $awsException)
     {
-        $this->errorCode = $awsException->getResponse()->getStatusCode();
-        $this->errorMessage = $awsException->getResponse()->getReasonPhrase();
+        if ($awsException->getResponse()) {
+            $this->errorCode = $awsException->getResponse()->getStatusCode();
+            $this->errorMessage = $awsException->getResponse()->getReasonPhrase();
+        } else {
+            $this->errorCode = 400;
+            $this->errorMessage = $awsException->getMessage();
+        }
         $this->errorInfo = $awsException->getMessage();
         return false;
     }
